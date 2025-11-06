@@ -1,0 +1,204 @@
+<?php
+session_start();
+
+// *** 1. ДОБАВЛЕНО: Генерация CSRF токена ***
+if (empty($_SESSION['csrf_token'])) {
+    // Генерируем новый токен, если его нет в сессии
+    // bin2hex(random_bytes(32)) генерирует криптографически безопасную строку длиной 64 символа.
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<?php
+$host = 'localhost';
+$user = 'root';
+$pass = '';
+$dbname = 'borisov'; 
+
+$conn = mysqli_connect($host, $user, $pass, $dbname);
+
+$user_id = null;
+$user_full_name = ''; 
+if (isset($_SESSION['login']) && !empty($_SESSION['login'])) {
+    // Безопасное использование данных сессии/куки при выборке
+    $login = mysqli_real_escape_string($conn, $_SESSION['login']);
+    $user_query = "SELECT id, name, surname FROM reg WHERE login = '$login'";
+    $user_result = mysqli_query($conn, $user_query);
+    if ($user_result && $user_row = mysqli_fetch_assoc($user_result)) {
+        $user_id = $user_row['id'];
+        $user_full_name = $user_row['name'] . ' ' . $user_row['surname'];
+    }
+}
+
+$message_status = '';
+
+if (isset($_POST['post_comment']) && $user_id) {
+    
+    // *** 2. ДОБАВЛЕНО: Проверка CSRF токена ***
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        // Токен отсутствует или не совпадает - блокируем действие
+        $message_status = "<div class='message message-error'>Ошибка безопасности: Неверный CSRF-токен.</div>";
+        // exit; // Можно также использовать exit, чтобы не продолжать выполнение скрипта
+    } else {
+        // Токен верен, можно обрабатывать комментарий
+        $product_id = mysqli_real_escape_string($conn, $_POST['product_id']);
+        $comment_text = mysqli_real_escape_string($conn, trim($_POST['comment_text'])); // Очистка ввода для SQL
+
+        if (!empty($comment_text) && is_numeric($product_id)) {
+            $insert_query = "INSERT INTO comments (product_id, user_id, comment_text) VALUES ('$product_id', '$user_id', '$comment_text')";
+            
+            if (mysqli_query($conn, $insert_query)) {
+                $message_status = "<div class='message message-success'>Комментарий успешно добавлен!</div>";
+                // Рекомендовано: сброс токена после успешного использования для одноразовости
+                // unset($_SESSION['csrf_token']); 
+            } else {
+                 $message_status = "<div class='message message-error'>Ошибка при добавлении комментария: " . mysqli_error($conn) . "</div>";
+            }
+        } else {
+             $message_status = "<div class='message message-error'>Ошибка: Пожалуйста, введите текст комментария.</div>";
+        }
+    }
+}
+
+// Получение текущей категории для фильтрации
+$current_category = isset($_GET['category']) ? $_GET['category'] : (isset($_POST['category_param']) ? $_POST['category_param'] : 'all');
+$where_clause = '';
+if ($current_category !== 'all' && is_numeric($current_category)) {
+    $where_clause = "WHERE product.category_id = " . mysqli_real_escape_string($conn, $current_category);
+}
+
+// Запрос товаров
+$products_query = "SELECT product.id, product.name, product.description, product.detailed_description, product.price FROM product $where_clause";
+$products_result = mysqli_query($conn, $products_query);
+
+?>
+
+<header>
+    <nav class="nav-links">
+        <a href="index.php">Главная</a>
+        <a href="catalog.php">Каталог</a>
+        <?php if ($user_id): ?>
+            <a href="profile.php">Профиль</a>
+            <form action="auto.php" method="post" style="display:inline-block; margin-left: 15px;">
+                <input type="submit" name="out" value="Выход" style="width: auto; background: none; color: #555555; padding: 0; border: none; font-weight: 500; text-transform: none; letter-spacing: normal;">
+            </form>
+        <?php else: ?>
+            <a href="auto.php">Авторизация</a>
+            <a href="reg.php">Регистрация</a>
+        <?php endif; ?>
+    </nav>
+</header>
+
+<div class="main-block page-content">
+    <h1>Каталог товаров</h1>
+    
+    <?php echo $message_status; ?>
+
+    <div class="category-filter">
+        <a href="catalog.php?category=all" class="filter-link <?php echo ($current_category === 'all' ? 'active' : ''); ?>">Все товары</a>
+        <?php
+        $category_query = "SELECT id, name FROM category";
+        $category_result = mysqli_query($conn, $category_query);
+        while ($category = mysqli_fetch_assoc($category_result)) {
+            $is_active = (string)$current_category === (string)$category['id'] ? 'active' : '';
+            // ЗАЩИТА ОТ XSS: Применено htmlspecialchars к имени категории
+            echo '<a href="catalog.php?category=' . $category['id'] . '" class="filter-link ' . $is_active . '">' . htmlspecialchars($category['name']) . '</a>';
+        }
+        ?>
+    </div>
+
+    <div class="product-list">
+        <?php
+        if ($products_result && mysqli_num_rows($products_result) > 0) {
+            while ($product = mysqli_fetch_assoc($products_result)) {
+                $product_id = $product['id'];
+        ?>
+        <div class="product-card">
+            <?php 
+                // ЗАЩИТА ОТ XSS: Применено htmlspecialchars к данным товара
+                echo '<h3>' . htmlspecialchars($product['name']) . '</h3>';
+                echo '<p>' . htmlspecialchars($product['description']) . '</p>';
+                echo '<p class="price">' . htmlspecialchars($product['price']) . '</p>';
+            ?>
+
+            <div class="comment-section">
+                <h4>Комментарии</h4>
+                <div class="comments-list">
+                    <?php
+                    $comments_query = "SELECT c.comment_text, c.created_at, r.name, r.surname 
+                                       FROM comments c
+                                       JOIN reg r ON c.user_id = r.id
+                                       WHERE c.product_id = '$product_id'
+                                       ORDER BY c.created_at DESC";
+                    $comments_result = mysqli_query($conn, $comments_query);
+                    
+                    if ($comments_result && mysqli_num_rows($comments_result) > 0) {
+                        while ($comment = mysqli_fetch_assoc($comments_result)) {
+                            // ЗАЩИТА ОТ XSS: Применено htmlspecialchars к имени автора
+                            $author_name = htmlspecialchars($comment['name'] . ' ' . $comment['surname']);
+                            $date = date('d.m.Y H:i', strtotime($comment['created_at']));
+                            
+                            echo "<div class='comment-item'>";
+                            echo "<span class='comment-author'>$author_name</span>";
+                            echo "<span class='comment-date'>($date)</span>";
+                            
+                            // *** 3. ИЗМЕНЕНО: ЗАЩИТА ОТ XSS АТАКИ НА ТЕКСТ КОММЕНТАРИЯ ***
+                            echo "<p class='comment-text'>" . htmlspecialchars($comment['comment_text']) . "</p>"; 
+                            
+                            echo "</div>";
+                        }
+                    } else {
+                        echo "<p class='no-comments'>Комментариев пока нет.</p>";
+                    }
+                    ?>
+                </div>
+
+                <?php if ($user_id): ?>
+                    <div class="comment-form">
+                        <h5>Оставить комментарий (Вы: <?php echo htmlspecialchars($user_full_name); ?>)</h5>
+                        <form action="catalog.php" method="POST">
+                            <textarea name="comment_text" placeholder="Ваш комментарий..." required></textarea>
+                            <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+                            <input type="hidden" name="category_param" value="<?php echo htmlspecialchars($current_category); ?>">
+                            
+                            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                            
+                            <input type="submit" name="post_comment" value="Отправить комментарий" style="width: auto; padding: 8px 15px;">
+                        </form>
+                    </div>
+                <?php else: ?>
+                    <p style="text-align: center; margin-top: 15px;"><a href="auto.php">Авторизуйтесь</a>, чтобы оставить комментарий.</p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php
+            }
+        } else {
+            echo "<div class=\"message message-error\">Товары в этой категории не найдены.</div>";
+        }
+        ?>
+    </div>
+</div>
+
+<footer>
+    <div class="contact-info">Контактная информация</div>
+    <div class="partners">Партнеры</div>
+</footer>
+
+<?php
+if ($conn) {
+    mysqli_close($conn);
+}
+?>
+</body>
+</html>
