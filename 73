@@ -1,0 +1,362 @@
+/**************************************************/
+/* НАЧАЛО ФАЙЛА: index.html         */
+/* (ГЛАВНАЯ СТРАНИЦА)               */
+/**************************************************/
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная - Простой Сайт</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Мой Простой Сайт</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="register.html" class="register-link">Регистрация</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="home-page">
+        <h2>Добро пожаловать!</h2>
+        <p>Это максимально простой сайт, созданный на HTML и CSS.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Простой Сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>
+
+/**************************************************/
+/* КОНЕЦ ФАЙЛА: index.html         */
+/**************************************************/
+
+
+/**************************************************/
+/* НАЧАЛО ФАЙЛА: register.html        */
+/* (СТРАНИЦА РЕГИСТРАЦИИ)           */
+/**************************************************/
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Простой Сайт</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Мой Простой Сайт</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="register.html" class="register-link">Регистрация</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="register-page">
+        <h2>Регистрация</h2>
+        <form action="#" method="post" class="registration-form">
+            <div>
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Зарегистрироваться</button>
+            <p class="note">*На этом простом сайте регистрация не отправляет данные на сервер.</p>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Простой Сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>
+
+/**************************************************/
+/* КОНЕЦ ФАЙЛА: register.html        */
+/**************************************************/
+
+
+/**************************************************/
+/* НАЧАЛО ФАЙЛА: catalog.html        */
+/* (СТРАНИЦА КАТАЛОГА)              */
+/**************************************************/
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог - Простой Сайт</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Мой Простой Сайт</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="register.html" class="register-link">Регистрация</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="catalog-page">
+        <h2>Наш Простой Каталог</h2>
+        <div class="product-list">
+            <div class="product-card">
+                <h3>Товар 1</h3>
+                <p>Краткое описание товара. Цена: 100 руб.</p>
+            </div>
+            <div class="product-card">
+                <h3>Товар 2</h3>
+                <p>Краткое описание другого товара. Цена: 150 руб.</p>
+            </div>
+            <div class="product-card">
+                <h3>Товар 3</h3>
+                <p>Еще один товар. Цена: 200 руб.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Простой Сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>
+
+/**************************************************/
+/* КОНЕЦ ФАЙЛА: catalog.html        */
+/**************************************************/
+
+
+/**************************************************/
+/* НАЧАЛО ФАЙЛА: about.html         */
+/* (СТРАНИЦА О НАС)                */
+/**************************************************/
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас - Простой Сайт</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Мой Простой Сайт</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="register.html" class="register-link">Регистрация</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="about-page">
+        <h2>О нас</h2>
+        <p>Мы — очень простой проект, созданный для демонстрации минимального HTML/CSS шаблона.</p>
+        <p>Наша цель — показать, как легко можно структурировать веб-страницу без сложных технологий.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Простой Сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>
+
+/**************************************************/
+/* КОНЕЦ ФАЙЛА: about.html         */
+/**************************************************/
+
+
+/**************************************************/
+/* НАЧАЛО ФАЙЛА: styles.css         */
+/* (СТИЛИ CSS)                   */
+/**************************************************/
+
+/* Базовые сбросы и шрифт */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Растягиваем на всю высоту */
+}
+
+/* Шапка */
+header {
+    background-color: #333;
+    color: white;
+    padding: 1em 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+/* Навигация */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #555;
+}
+
+.register-link {
+    background-color: #007bff;
+}
+
+.register-link:hover {
+    background-color: #0056b3;
+}
+
+/* Основной контент */
+main {
+    flex: 1; /* Занимает всё доступное пространство */
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+main h2 {
+    color: #007bff;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Футер */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto; /* Прижимает футер к низу */
+}
+
+/* Стили для Регистрации */
+.registration-form div {
+    margin-bottom: 15px;
+}
+
+.registration-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.registration-form input[type="text"],
+.registration-form input[type="email"],
+.registration-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
+}
+
+.registration-form button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.registration-form button:hover {
+    background-color: #1e7e34;
+}
+
+.registration-form .note {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 10px;
+}
+
+/* Стили для Каталога */
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    width: calc(33% - 20px); /* 3 карточки в ряд */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    min-width: 200px; /* Минимальная ширина для адаптивности */
+}
+
+.product-card h3 {
+    margin-top: 0;
+    color: #ff6a00;
+}
+
+/* Медиа-запросы для мобильных устройств */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        gap: 5px;
+    }
+    nav a {
+        display: block;
+    }
+    .product-card {
+        width: 100%; /* 1 карточка в ряд на маленьких экранах */
+    }
+}
+
+/**************************************************/
+/* КОНЕЦ ФАЙЛА: styles.css        */
+/**************************************************/
