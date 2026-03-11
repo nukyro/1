@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Рецептурная книга</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f4f4f4;
+    margin:0;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+}
+
+.search{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+input{
+    padding:10px;
+    width:320px;
+    font-size:16px;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card h3{
+    margin-top:0;
+}
+
+.ingredients{
+    font-size:14px;
+    color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📖 Рецептурная книга</h1>
+
+<div class="search">
+<input type="text" id="search" placeholder="Введите ингредиент...">
+</div>
+
+<div class="container" id="recipes"></div>
+
+<script>
+
+const recipes = [
+
+{
+name:"Омлет",
+ingredients:["яйца","молоко","соль","масло"],
+recipe:"Взбить яйца с молоком и солью. Жарить на сковороде 5 минут."
+},
+
+{
+name:"Салат из огурцов и помидоров",
+ingredients:["огурцы","помидоры","соль","оливковое масло"],
+recipe:"Нарезать овощи, добавить соль и масло."
+},
+
+{
+name:"Паста с сыром",
+ingredients:["паста","сыр","масло","соль"],
+recipe:"Отварить пасту и добавить тёртый сыр."
+},
+
+{
+name:"Жареный картофель",
+ingredients:["картофель","масло","соль"],
+recipe:"Нарезать картофель и жарить до золотистой корочки."
+},
+
+{
+name:"Гречка с маслом",
+ingredients:["гречка","вода","соль","масло"],
+recipe:"Отварить гречку в воде 15 минут, добавить масло."
+},
+
+{
+name:"Рис с овощами",
+ingredients:["рис","морковь","лук","масло","соль"],
+recipe:"Отварить рис. Обжарить овощи и смешать."
+},
+
+{
+name:"Суп куриный",
+ingredients:["курица","картофель","морковь","лук","соль","вода"],
+recipe:"Варить курицу 30 минут, добавить овощи и готовить ещё 20 минут."
+},
+
+{
+name:"Бутерброд с сыром",
+ingredients:["хлеб","сыр","масло"],
+recipe:"Намазать хлеб маслом и положить сыр."
+},
+
+{
+name:"Блины",
+ingredients:["мука","молоко","яйца","сахар","соль"],
+recipe:"Смешать ингредиенты и жарить тонкие блины."
+},
+
+{
+name:"Фруктовый салат",
+ingredients:["яблоко","банан","апельсин","йогурт"],
+recipe:"Нарезать фрукты и перемешать с йогуртом."
+}
+
+]
+
+const container = document.getElementById("recipes")
+const search = document.getElementById("search")
+
+function showRecipes(list){
+
+container.innerHTML=""
+
+list.forEach(r=>{
+
+const card=document.createElement("div")
+card.className="card"
+
+card.innerHTML=`
+<h3>${r.name}</h3>
+<p class="ingredients"><b>Ингредиенты:</b> ${r.ingredients.join(", ")}</p>
+<p>${r.recipe}</p>
+`
+
+container.appendChild(card)
+
+})
+
+}
+
+showRecipes(recipes)
+
+search.addEventListener("input",()=>{
+
+const value=search.value.toLowerCase()
+
+const filtered=recipes.filter(r=>
+r.ingredients.some(i=>i.toLowerCase().includes(value))
+)
+
+showRecipes(filtered)
+
+})
+
+</script>
+
+</body>
+</html>
